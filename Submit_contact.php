@@ -1,20 +1,30 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $message = htmlspecialchars($_POST['message']);
+    // Sanitize input data
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $message = htmlspecialchars(trim($_POST['message']));
 
-    // Here you can add code to send the email or save the message to a database
-    // For example, using the mail() function in PHP:
-    $to = "aaryan.dewatwal@gmail.com"; // Replace with the therapist's email
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format.";
+        exit;
+    }
+
+    
+    $to = "aaryan.dewatwal@gmail.com";
     $subject = "New Contact from $name";
     $body = "Name: $name\nEmail: $email\nMessage:\n$message";
-    $headers = "From: $email";
+    $headers = "From: $email\r\n";
+    $headers .= "Reply-To: $email\r\n"; 
 
+    // Send email
     if (mail($to, $subject, $body, $headers)) {
         echo "Message sent successfully!";
     } else {
         echo "Failed to send message.";
     }
+} else {
+    echo "Invalid request method.";
 }
 ?>
