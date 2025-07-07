@@ -314,27 +314,80 @@
 
     <!-- Meditation Modal -->
     <div id="meditationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">5-Minute Meditation</h3>
-                <button id="closeMeditation" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="text-center mb-6">
-                <div class="w-32 h-32 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span id="meditationTimer" class="text-2xl font-bold">5:00</span>
-                </div>
-                <p class="text-gray-600 dark:text-gray-300 mb-4">Close your eyes and focus on your breath</p>
-                <button id="startMeditation" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Start</button>
-            </div>
-            <audio id="meditationBell" src="https://assets.mixkit.co/sfx/preview/mixkit-meditation-bell-1759.mp3" preload="auto"></audio>
-            <audio id="startBell" src="https://assets.mixkit.co/sfx/preview/mixkit-single-bell-tap-931.mp3" preload="auto"></audio>
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">5-Minute Meditation</h3>
+            <button id="closeMeditation" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100" aria-label="Close meditation modal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
+        <div class="text-center mb-6">
+            <div class="w-32 h-32 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span id="meditationTimer" class="text-2xl font-bold">5:00</span>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Close your eyes and focus on your breath</p>
+            <button id="startMeditation" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Start</button>
+        </div>
+        <audio id="meditationBell" src="https://assets.mixkit.co/sfx/preview/mixkit-meditation-bell-1759.mp3" preload="auto"></audio>
+        <audio id="startBell" src="https://assets.mixkit.co/sfx/preview/mixkit-single-bell-tap-931.mp3" preload="auto"></audio>
     </div>
+</div>
 
+<script>
+    // Meditation functionality
+    const meditationModal = document.getElementById('meditationModal');
+    const closeMeditation = document.getElementById('closeMeditation');
+    const startMeditation = document.getElementById('startMeditation');
+    const meditationTimer = document.getElementById('meditationTimer');
+    const meditationBell = document.getElementById('meditationBell');
+    const startBell = document.getElementById('startBell');
+
+    // Open meditation modal when "Try Now" is clicked
+    document.querySelectorAll('.flip-card-back button').forEach(button => {
+        if (button.textContent === 'Try Now') {
+            button.addEventListener('click', () => {
+                meditationModal.classList.remove('hidden');
+            });
+        }
+    });
+
+    closeMeditation.addEventListener('click', () => {
+        meditationModal.classList.add('hidden');
+        clearInterval(meditationInterval); // Clear interval if modal is closed
+        meditationTimer.textContent = '5:00'; // Reset timer
+    });
+
+    let meditationInterval;
+    startMeditation.addEventListener('click', function() {
+        if (this.textContent === 'Start') {
+            this.textContent = 'Pause';
+            startBell.play(); // Play start bell
+            let seconds = 300; // 5 minutes in seconds
+
+            meditationInterval = setInterval(() => {
+                seconds--;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                meditationTimer.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                if (seconds <= 0) {
+                    clearInterval(meditationInterval);
+                    meditationBell.play(); // Play end bell
+                    this.textContent = 'Start';
+                    meditationTimer.textContent = '5:00'; // Reset timer
+                    setTimeout(() => {
+                        meditationModal.classList.add('hidden'); // Close modal after meditation
+                    }, 2000);
+                }
+            }, 1000);
+        } else {
+            clearInterval(meditationInterval);
+            this.textContent = 'Start';
+        }
+    });
+</script>
     <!-- Gratitude List Modal -->
     <div id="gratitudeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
@@ -582,57 +635,7 @@
         // Dark mode toggle
         document.getElementById('darkModeToggle').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
-        });
-
-        // Meditation functionality
-        const meditationModal = document.getElementById('meditationModal');
-        const closeMeditation = document.getElementById('closeMeditation');
-        const startMeditation = document.getElementById('startMeditation');
-        const meditationTimer = document.getElementById('meditationTimer');
-        const meditationBell = document.getElementById('meditationBell');
-        const startBell = document.getElementById('startBell');
-        
-        // Open meditation modal when "Try Now" is clicked
-        document.querySelectorAll('.flip-card-back button').forEach(button => {
-            if (button.textContent === 'Try Now') {
-                button.addEventListener('click', () => {
-                    meditationModal.classList.remove('hidden');
-                });
-            }
-        });
-        
-        closeMeditation.addEventListener('click', () => {
-            meditationModal.classList.add('hidden');
-        });
-        
-        let meditationInterval;
-        startMeditation.addEventListener('click', function() {
-            if (this.textContent === 'Start') {
-                this.textContent = 'Pause';
-                let seconds = 300; // 5 minutes
-                document.getElementById('startBell').play();
-                
-                meditationInterval = setInterval(() => {
-                    seconds--;
-                    const mins = Math.floor(seconds / 60);
-                    const secs = seconds % 60;
-                    meditationTimer.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                    
-                    if (seconds <= 0) {
-                        clearInterval(meditationInterval);
-                        meditationBell.play();
-                        this.textContent = 'Start';
-                        meditationTimer.textContent = '5:00';
-                        setTimeout(() => {
-                            meditationModal.classList.add('hidden');
-                        }, 2000);
-                    }
-                }, 1000);
-            } else {
-                clearInterval(meditationInterval);
-                this.textContent = 'Start';
-            }
-        });
+        })
 
         // Stretch Break functionality
         const stretchModal = document.getElementById('stretchModal');
