@@ -450,29 +450,96 @@
 
     <!-- Stretch Break Modal -->
     <div id="stretchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Stretch Break</h3>
-                <button id="closeStretch" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Stretch Break</h3>
+            <button id="closeStretch" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100" aria-label="Close stretch modal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="text-center mb-6">
+            <div class="relative h-48 mb-6">
+                <div id="stretchAnimation" class="w-full h-full flex items-center justify-center">
+                    <!-- Placeholder for stretch image -->
+                    <img id="stretchImage" src="" alt="Animated stretch demonstration" class="rounded-lg hidden">
+                </div>
             </div>
-            <div class="text-center mb-6">
-                <div class="relative h-48 mb-6">
-                    <div id="stretchAnimation" class="w-full h-full flex items-center justify-center">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/74389736-9e44-4f84-8544-383d24052241.png" alt="Animated stretch demonstration" class="rounded-lg">
-                    </div>
-                </div>
-                <p class="text-gray-600 dark:text-gray-300 mb-4" id="stretchInstruction">Let's do some neck rolls to release tension</p>
-                <div class="flex justify-center space-x-4">
-                    <button id="prevStretch" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200">Previous</button>
-                    <button id="nextStretch" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Next Stretch</button>
-                </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4" id="stretchInstruction">Let's do some neck rolls to release tension</p>
+            <div class="flex justify-center space-x-4">
+                <button id="prevStretch" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200">Previous</button>
+                <button id="nextStretch" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Next Stretch</button>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    // Stretch Break functionality
+    const stretchModal = document.getElementById('stretchModal');
+    const closeStretch = document.getElementById('closeStretch');
+    const prevStretch = document.getElementById('prevStretch');
+    const nextStretch = document.getElementById('nextStretch');
+    const stretchInstruction = document.getElementById('stretchInstruction');
+    const stretchImage = document.getElementById('stretchImage');
+
+    const stretches = [
+        {
+            name: "Neck Rolls",
+            instruction: "Slowly roll your head in a circular motion, first clockwise then counter-clockwise.",
+            image: "https://example.com/neck_rolls.png" // Replace with a valid image URL
+        },
+        {
+            name: "Shoulder Shrugs",
+            instruction: "Lift your shoulders up towards your ears, hold, then release.",
+            image: "https://example.com/shoulder_shrugs.png" // Replace with a valid image URL
+        },
+        {
+            name: "Side Stretch",
+            instruction: "Reach one arm overhead and lean to the opposite side.",
+            image: "https://example.com/side_stretch.png" // Replace with a valid image URL
+        },
+        {
+            name: "Wrist Circles",
+            instruction: "Rotate your wrists in circles, then switch directions.",
+            image: "https://example.com/wrist_circles.png" // Replace with a valid image URL
+        }
+    ];
+
+    let currentStretch = 0;
+
+    // Open stretch modal
+    document.getElementById('startStretch').addEventListener('click', () => {
+        currentStretch = 0; // Reset to the first stretch
+        updateStretchDisplay();
+        stretchModal.classList.remove('hidden');
+    });
+
+    // Close stretch modal
+    closeStretch.addEventListener('click', () => {
+        stretchModal.classList.add('hidden');
+    });
+
+    // Previous stretch
+    prevStretch.addEventListener('click', () => {
+        currentStretch = (currentStretch - 1 + stretches.length) % stretches.length;
+        updateStretchDisplay();
+    });
+
+    // Next stretch
+    nextStretch.addEventListener('click', () => {
+        currentStretch = (currentStretch + 1) % stretches.length;
+        updateStretchDisplay();
+    });
+
+    // Update stretch display
+    function updateStretchDisplay() {
+        stretchInstruction.textContent = stretches[currentStretch].instruction;
+        stretchImage.src = stretches[currentStretch].image;
+        stretchImage.classList.remove('hidden'); // Show the image
+    }
+</script>
 
     <script>
         // Initialize mood chart
@@ -636,61 +703,6 @@
         document.getElementById('darkModeToggle').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
         })
-
-        // Stretch Break functionality
-        const stretchModal = document.getElementById('stretchModal');
-        const closeStretch = document.getElementById('closeStretch');
-        const startStretch = document.getElementById('startStretch');
-        const prevStretch = document.getElementById('prevStretch');
-        const nextStretch = document.getElementById('nextStretch');
-        const stretchInstruction = document.getElementById('stretchInstruction');
-        
-        const stretches = [
-            {
-                name: "Neck Rolls",
-                instruction: "Slowly roll your head in a circular motion, first clockwise then counter-clockwise",
-                Image:"C:\ASHU BCUP\sketches\my.jpg"
-            },
-            {
-                name: "Shoulder Shrugs",
-                instruction: "Lift your shoulders up towards your ears, hold, then release"
-            },
-            {
-                name: "Side Stretch",
-                instruction: "Reach one arm overhead and lean to the opposite side"
-            },
-            {
-                name: "Wrist Circles",
-                instruction: "Rotate your wrists in circles, then switch directions"
-            }
-        ];
-        
-        let currentStretch = 0;
-        
-        startStretch.addEventListener('click', () => {
-            currentStretch = 0;
-            updateStretchDisplay();
-            stretchModal.classList.remove('hidden');
-        });
-        
-        closeStretch.addEventListener('click', () => {
-            stretchModal.classList.add('hidden');
-        });
-        
-        prevStretch.addEventListener('click', () => {
-            currentStretch = (currentStretch - 1 + stretches.length) % stretches.length;
-            updateStretchDisplay();
-        });
-        
-        nextStretch.addEventListener('click', () => {
-            currentStretch = (currentStretch + 1) % stretches.length;
-            updateStretchDisplay();
-        });
-        
-        function updateStretchDisplay() {
-            stretchInstruction.textContent = stretches[currentStretch].instruction;
-            // In a real app, you would update the animation/image here
-        }
 
         // Random journal prompts
         const prompts = [
