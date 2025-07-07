@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Calming Activities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-gradient {
+            background: linear-gradient(135deg, #6B46C1 0%, #4B5563 100%);
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-heading" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-white focus:text-indigo-600 focus:rounded-full focus:z-50">
+        Skip to content
+    </a>
+    <div class="min-h-screen pb-20">
+        <!-- Header -->
+        <header class="bg-gradient text-white py-12 px-4">
+            <div class="container mx-auto max-w-6xl">
+                <div class="flex flex-col items-center text-center">
+                    <h1 class="text-4xl font-bold mb-4" id="main-heading">SereneMind Activities</h1>
+                    <p class="text-xl max-w-2xl">
+                        Personalized suggestions to help you relax and recharge
+                    </p>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="container mx-auto max-w-6xl px-4 mt-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="activities-container">
+                <!-- Initial activities will be loaded here -->
+            </div>
+            
+            <div class="flex justify-center mt-12">
+                <button id="load-more" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg shadow-md transition-all duration-300 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                    </svg>
+                    Get More Suggestions
+                </button>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Initial set of activities
+        const initialActivities = [
+            {
+                title: "Deep Breathing",
+                description: "Practice 4-7-8 breathing: inhale for 4 seconds, hold for 7, exhale for 8. Repeat for several cycles.",
+                duration: "5-10 min",
+                icon: "🧘"
+            },
+            {
+                title: "Nature Walk",
+                description: "Take a walk in nature, focusing on the sights, sounds, and smells around you. Leave your phone behind.",
+                duration: "20-30 min",
+                icon: "🌳"
+            },
+            {
+                title: "Journaling",
+                description: "Write down your thoughts and feelings. Try gratitude journaling by listing things you're thankful for.",
+                duration: "10-15 min",
+                icon: "📓"
+            },
+            {
+                title: "Progressive Muscle Relaxation",
+                description: "Systematically tense and relax each muscle group from your toes to your head.",
+                duration: "10-15 min",
+                icon: "💪"
+            },
+            {
+                title: "Guided Meditation",
+                description: "Listen to a guided meditation recording or app to help calm your thoughts.",
+                duration: "5-20 min",
+                icon: "🕉️"
+            },
+            {
+                title: "Coloring",
+                description: "Engage in adult coloring books or mandala coloring to focus your mind.",
+                duration: "15-30 min",
+                icon: "🎨"
+            }
+        ];
+        
+        // Additional activities to load
+        const additionalActivities = [
+            {
+                title: "Aromatherapy",
+                description: "Use calming scents like lavender or chamomile in a diffuser or as essential oils.",
+                duration: "5-15 min",
+                icon: "🌿"
+            },
+            {
+                title: "Yoga",
+                description: "Practice gentle yoga poses that emphasize breathing and stretching.",
+                duration: "15-30 min",
+                icon: "🧘‍♀️"
+            },
+            {
+                title: "Tea Ritual",
+                description: "Prepare and savor a cup of herbal tea mindfully, focusing on each step of the process.",
+                duration: "10-15 min",
+                icon: "🍵"
+            },
+            {
+                title: "Digital Detox",
+                description: "Disconnect from all screens and digital devices for a set period of time.",
+                duration: "30-60 min",
+                icon: "📵"
+            },
+            {
+                title: "Mindful Listening",
+                description: "Listen to calming music or nature sounds without any other distractions.",
+                duration: "10-20 min",
+                icon: "🎧"
+            },
+            {
+                title: "Body Scan",
+                description: "Lie down and slowly bring awareness to each part of your body from head to toe.",
+                duration: "10-15 min",
+                icon: "👁️"
+            }
+        ];
+        
+        // Load initial activities
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('activities-container');
+            
+            initialActivities.forEach((activity, index) => {
+                container.appendChild(createActivityCard(activity, index));
+            });
+        });
+        
+        // Handle "Get More Suggestions" button click
+        document.getElementById('load-more').addEventListener('click', () => {
+            const container = document.getElementById('activities-container');
+            const totalActivities = container.children.length;
+            
+            // Clear first so we can see animations better
+            container.innerHTML = '';
+            
+            // Reload initial activities plus 3 new ones if available
+            const allActivities = [...initialActivities];
+            const newActivitiesCount = Math.min(3, additionalActivities.length);
+            
+            if (newActivitiesCount > 0) {
+                for (let i = 0; i < newActivitiesCount; i++) {
+                    allActivities.push(additionalActivities[i]);
+                }
+                // Remove the added suggestions from the additional array
+                additionalActivities.splice(0, newActivitiesCount);
+            }
+            
+            allActivities.forEach((activity, index) => {
+                setTimeout(() => {
+                    container.appendChild(createActivityCard(activity, index));
+                }, index * 100);
+            });
+            
+            // If no more additional activities, disable the button
+            if (additionalActivities.length === 0) {
+                const button = document.getElementById('load-more');
+                button.textContent = "No More Suggestions";
+                button.disabled = true;
+                button.classList.remove('from-indigo-600', 'to-purple-600', 'hover:from-indigo-700', 'hover:to-purple-700');
+                button.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-75');
+            }
+        });
+        
+        // Create an activity card element
+        function createActivityCard(activity, index) {
+            const card = document.createElement('div');
+            card.className = `activity-card bg-white rounded-xl p-6 shadow-lg fade-in hover:shadow-xl transition-all duration-300`;
+            card.setAttribute('role', 'article');
+            card.setAttribute('aria-labelledby', `activity-title-${index}`);
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            card.innerHTML = `
+                <div class="flex items-center mb-4">
+                    <span class="text-3xl mr-3" aria-hidden="true">${activity.icon}</span>
+                    <h3 class="text-xl font-semibold text-gray-800" id="activity-title-${index}">${activity.title}</h3>
+                </div>
+                <p class="text-gray-600 mb-4 text-sm leading-relaxed">${activity.description}</p>
+                <div class="flex justify-between items-center border-t pt-3">
+                    <span class="text-xs text-indigo-600 font-medium bg-indigo-50 px-2 py-1 rounded-full">${activity.duration}</span>
+                    <button class="text-xs text-indigo-600 hover:text-indigo-800 font-medium" aria-label="Try ${activity.title} activity" onclick="launchActivity('${activity.title}')">
+                        <span>Try Now</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function launchActivity(activityName) {
+            // Select corresponding activity from all available
+            const allActivities = [...initialActivities, ...additionalActivities];
+            const activity = allActivities.find(a => a.title === activityName);
+            
+            if(activity) {
+                alert(`Starting ${activity.title} activity!\n\n${activity.description}\n\nRecommended Duration: ${activity.duration}`);
+                // In a real app, would launch the actual activity here
+            }
+        }
+    </script>
+</body>
+</html>
+

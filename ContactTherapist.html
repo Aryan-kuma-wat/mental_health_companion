@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SereneMind - Mental Health Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #7C3AED;
+            --secondary: #A78BFA;
+            --accent: #EC4899;
+            --light: #F8F9FA;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            transition: background-color 0.3s;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #7C3AED;
+            border-radius: 4px;
+        }
+        
+        /* Dark mode */
+        .dark-mode {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+        }
+        
+        .dark-mode .bg-white {
+            background-color: #16213e !important;
+            color: #e6e6e6;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gray-50 text-gray-800 py-6 dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <span class="text-2xl font-bold text-gray-700 dark:text-gray-300">SereneMind</span>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <button class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition font-semibold border border-blue-200">Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Contact Form Section -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-semibold mb-6">Contact a Therapist</h2>
+            <div class="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+                <form id="contactForm" action="submit_contact.php" method="POST">
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Name</label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Email</label>
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Message</label>
+                        <textarea id="message" name="message" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600" rows="4" placeholder="Write your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-gray-50 text-gray-800 mt-12 py-8 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">SereneMind</span>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Supporting your mental wellbeing journey.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-700 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-100 transition">About</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Privacy</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Terms</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Contact</a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                © 2023 SereneMind. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Form validation
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if (!name || !email || !message) {
+                alert('Please fill in all fields.');
+                event.preventDefault(); // Prevent form submission
+            } else {
+                alert('Your message has been sent!');
+            }
+        });
+    </script>
+</body>
+</html>
