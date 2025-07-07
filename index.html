@@ -337,26 +337,63 @@
 
     <!-- Gratitude List Modal -->
     <div id="gratitudeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Gratitude Journal</h3>
-                <button id="closeGratitude" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="mb-6">
-                <p class="text-gray-600 dark:text-gray-300 mb-4">Take a moment to reflect on things you're grateful for today:</p>
-                <div class="space-y-3">
-                    <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for...">
-                    <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for...">
-                    <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for...">
-                </div>
-            </div>
-            <button id="saveGratitude" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition w-full">Save Entries</button>
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Gratitude Journal</h3>
+            <button id="closeGratitude" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100" aria-label="Close gratitude journal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
+        <div class="mb-6">
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Take a moment to reflect on things you're grateful for today:</p>
+            <div class="space-y-3">
+                <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for..." id="gratitudeInput1">
+                <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for..." id="gratitudeInput2">
+                <input type="text" class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="I'm grateful for..." id="gratitudeInput3">
+            </div>
+        </div>
+        <button id="saveGratitude" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition w-full">Save Entries</button>
     </div>
+</div>
+
+<script>
+    // Open the gratitude modal
+    document.getElementById('startGratitude').addEventListener('click', () => {
+        document.getElementById('gratitudeModal').classList.remove('hidden');
+    });
+
+    // Close the gratitude modal
+    document.getElementById('closeGratitude').addEventListener('click', () => {
+        document.getElementById('gratitudeModal').classList.add('hidden');
+    });
+
+    // Save gratitude entries
+    document.getElementById('saveGratitude').addEventListener('click', function() {
+        const inputs = [
+            document.getElementById('gratitudeInput1').value,
+            document.getElementById('gratitudeInput2').value,
+            document.getElementById('gratitudeInput3').value
+        ];
+        
+        // Check if at least one input is filled
+        const hasContent = inputs.some(input => input.trim() !== '');
+        
+        if (hasContent) {
+            alert('Your gratitude entries have been saved!');
+            // Optionally, you can save the entries to a database or local storage here
+            
+            // Clear the inputs
+            inputs.forEach((input, index) => {
+                document.getElementById(`gratitudeInput${index + 1}`).value = '';
+            });
+            document.getElementById('gratitudeModal').classList.add('hidden');
+        } else {
+            alert('Please write at least one thing you\'re grateful for');
+        }
+    });
+</script>
 
     <!-- Stretch Break Modal -->
     <div id="stretchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -594,39 +631,6 @@
             } else {
                 clearInterval(meditationInterval);
                 this.textContent = 'Start';
-            }
-        });
-
-        // Gratitude List functionality
-        const gratitudeModal = document.getElementById('gratitudeModal');
-        const closeGratitude = document.getElementById('closeGratitude');
-        const startGratitude = document.getElementById('startGratitude');
-        const saveGratitude = document.getElementById('saveGratitude');
-        
-        startGratitude.addEventListener('click', () => {
-            gratitudeModal.classList.remove('hidden');
-        });
-        
-        closeGratitude.addEventListener('click', () => {
-            gratitudeModal.classList.add('hidden');
-        });
-        
-        saveGratitude.addEventListener('click', function() {
-            const inputs = gratitudeModal.querySelectorAll('input');
-            let hasContent = false;
-            
-            inputs.forEach(input => {
-                if (input.value.trim() !== '') {
-                    hasContent = true;
-                }
-            });
-            
-            if (hasContent) {
-                alert('Your gratitude entries have been saved!');
-                gratitudeModal.classList.add('hidden');
-                inputs.forEach(input => input.value = '');
-            } else {
-                alert('Please write at least one thing you\'re grateful for');
             }
         });
 
